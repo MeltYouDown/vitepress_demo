@@ -1,0 +1,22 @@
+on: push
+
+jobs:
+  job1:
+    name: 自动部署
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+        
+      - name: 安装依赖
+        run: npm add -D vitepress
+        
+      - name: 构建项目
+        run: npm run docs:build
+        
+      - name: 部署
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+          branch: gh-pages
+          folder: docs/.vitepress/dist
